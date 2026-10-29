@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { CHARACTERS, characterArt } from "@/content/characters";
+import { CHARACTERS, characterArt, framedArt } from "@/content/characters";
 import { frameArt } from "@/lib/frames";
+import { itemArt } from "@/content/magic";
 
 const SHOWCASE = ["tootles", "coralie", "star-eye-selwyn", "luna", "nadette"];
 
@@ -15,7 +16,7 @@ const CARDS = [
   { href: "/characters", label: "Characters", title: "Meet all 50", body: "Lost Boys, Mermaids, Pirates, Pixies and Legendaries.", art: () => characterArt(CHARACTERS.find((c) => c.slug === "coralie")!) },
   { href: "/frames", label: "Tiers & Levels", title: "Read the frame", body: "What the 16 frames mean and how yours will change.", art: () => frameArt("ruby", "epic") },
   { href: "/legendary", label: "Legendary", title: "Go Legendary", body: "The two ways to get one of the 10 rarest characters.", art: () => characterArt(CHARACTERS.find((c) => c.slug === "nadette")!), golden: true },
-  { href: "/magic", label: "Character Magic", title: "Use Magic", body: "Every item, what it costs, and your real shiny odds.", art: () => characterArt(CHARACTERS.find((c) => c.slug === "luna")!) },
+  { href: "/magic", label: "Character Magic", title: "Use Magic", body: "Every item, what it costs, and your real shiny odds.", art: () => itemArt("mysterious-potion"), item: true },
 ];
 
 export default function Home() {
@@ -65,7 +66,7 @@ export default function Home() {
             style={{ transform: `rotate(${(i - 2) * 5}deg) translateY(${Math.abs(i - 2) * 10}px)` }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={characterArt(c)} alt={c.name} width={320} height={320} className="w-full rounded-2xl shadow-2xl shadow-black/50 transition-transform duration-200 ease-out group-hover:-translate-y-3 group-focus-visible:-translate-y-3" />
+            <img src={framedArt(c)} alt={c.name} width={320} height={320} className="w-full rounded-2xl shadow-2xl shadow-black/50 transition-transform duration-200 ease-out group-hover:-translate-y-3 group-focus-visible:-translate-y-3" />
           </Link>
         ))}
       </div>
@@ -95,7 +96,13 @@ export default function Home() {
           >
             {c.golden && <Sparkles />}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={c.art()} alt="" width={112} height={112} className="size-24 shrink-0 rounded-2xl sm:size-28" />
+            <img
+              src={c.art()}
+              alt=""
+              width={112}
+              height={112}
+              className={`size-24 shrink-0 rounded-2xl sm:size-28 ${c.item ? "bg-white/[0.06] object-contain p-3" : ""}`}
+            />
             <div>
               <p className="label">{c.label}</p>
               <p className="mt-1 text-xl font-bold">{c.title}</p>

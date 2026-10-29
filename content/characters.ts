@@ -72,6 +72,11 @@ export function characterArt(c: Pick<Character, "archetype" | "index">) {
   return `/art/characters/${ARCHETYPES[c.archetype].artFile}_${c.index}.avif`;
 }
 
+/** Diamond Legendary framed render. Only downloaded for the home page fan characters. */
+export function framedArt(c: Pick<Character, "archetype" | "index">) {
+  return `/art/framed/${ARCHETYPES[c.archetype].artFile}_${c.index}.avif`;
+}
+
 /** Shiny characters are animated; the videos are large, so they stream from Neverland's CDN on demand. */
 export function shinyVideo(c: Pick<Character, "archetype" | "index">) {
   const a = ARCHETYPES[c.archetype];
