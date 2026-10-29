@@ -102,7 +102,8 @@ export default function BasicsPage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-sm text-ink-muted">
+            {/* Side by side (lg+) the note sits above the arrow so both perk boxes line up; stacked, it follows the box. */}
+            <p className="mt-3 text-sm text-ink-muted max-lg:order-last max-lg:mt-4">
               Votes are signed messages, not transactions. A proposal needs {fmt(GOVERNANCE.quorum)} veDUST to take part to
               count.{" "}
               <a href={DOCS.governance} target="_blank" rel="noopener noreferrer" className="underline decoration-white/30 underline-offset-4 hover:text-ink">

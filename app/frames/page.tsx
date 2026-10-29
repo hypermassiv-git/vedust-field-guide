@@ -3,12 +3,27 @@ import Link from "next/link";
 import { FrameGrid } from "@/components/FrameGrid";
 import { FrameSimulator } from "@/components/FrameSimulator";
 import { Callout, PageHeader, Section } from "@/components/ui";
-import { LEVELS, TIERS } from "@/lib/frames";
+import { LEVELS, TIERS, frameArt } from "@/lib/frames";
+import type { Level, Tier } from "@/lib/frames";
 import { TIER_COLOR } from "@/components/FrameGrid";
 
 export const metadata: Metadata = {
   title: "Tiers & Levels",
   description: "How a veDUST frame is set by veDUST power (Level) and days left on the lock (Tier).",
+};
+
+const SHORT_LEVEL: Record<Level, string> = {
+  common: "Under 100",
+  fine: "100+",
+  epic: "1,000+",
+  legendary: "10,000+",
+};
+
+const SHORT_TIER: Record<Tier, string> = {
+  sapphire: "Under 120 days",
+  emerald: "120+ days",
+  ruby: "270+ days",
+  diamond: "Infinite",
 };
 
 export default function FramesPage() {
@@ -21,33 +36,30 @@ export default function FramesPage() {
       />
 
       <Section label="The two parts of a frame">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="panel p-6">
-            <p className="label">Level: frame style</p>
-            <h3 className="mt-2 text-xl font-bold">Set by veDUST power</h3>
-            <ul className="mt-4 space-y-2">
-              {LEVELS.map((l) => (
-                <li key={l.id} className="inset flex items-center justify-between px-4 py-2.5">
-                  <span className="font-semibold">{l.label}</span>
-                  <span className="text-sm text-ink-secondary tabular-nums">{l.range}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="panel p-6">
-            <p className="label">Tier: frame gem</p>
-            <h3 className="mt-2 text-xl font-bold">Set by days left on the lock</h3>
-            <ul className="mt-4 space-y-2">
-              {TIERS.map((t) => (
-                <li key={t.id} className="inset flex items-center justify-between px-4 py-2.5">
-                  <span className="font-semibold" style={{ color: TIER_COLOR[t.id] }}>
-                    {t.label}
-                  </span>
-                  <span className="text-sm text-ink-secondary tabular-nums">{t.range}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <FramePart
+            label="Level: frame style"
+            title="Set by veDUST power"
+            from="Less power"
+            to="More power"
+            steps={LEVELS.map((l) => ({
+              name: l.label,
+              detail: SHORT_LEVEL[l.id],
+              art: frameArt("sapphire", l.id),
+            }))}
+          />
+          <FramePart
+            label="Tier: frame gem"
+            title="Set by days left on the lock"
+            from="Fewer days"
+            to="Infinite Lock"
+            steps={TIERS.map((t) => ({
+              name: t.label,
+              detail: SHORT_TIER[t.id],
+              art: frameArt(t.id, "epic"),
+              color: TIER_COLOR[t.id],
+            }))}
+          />
         </div>
       </Section>
 
@@ -80,5 +92,45 @@ export default function FramesPage() {
         </div>
       </Section>
     </main>
+  );
+}
+
+/* One row of four frames that differ in only one way, so the change is easy to see. */
+function FramePart({
+  label,
+  title,
+  from,
+  to,
+  steps,
+}: {
+  label: string;
+  title: string;
+  from: string;
+  to: string;
+  steps: { name: string; detail: string; art: string; color?: string }[];
+}) {
+  return (
+    <div className="panel p-5 sm:p-6">
+      <p className="label">{label}</p>
+      <h3 className="mt-2 text-xl font-bold">{title}</h3>
+      <ol className="mt-5 grid grid-cols-4 gap-2 sm:gap-3">
+        {steps.map((s) => (
+          <li key={s.name} className="text-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={s.art} alt={`${s.name} frame`} width={140} height={140} loading="lazy" className="aspect-square w-full rounded-lg sm:rounded-xl" />
+            <p className="mt-2 text-sm font-semibold sm:text-base" style={s.color ? { color: s.color } : undefined}>
+              {s.name}
+            </p>
+            <p className="text-[11px] leading-tight text-ink-muted tabular-nums sm:text-xs">{s.detail}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-4 flex items-center gap-2 text-[11px] text-ink-muted sm:text-xs" aria-hidden>
+        <span>{from}</span>
+        <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-lavender/60" />
+        <span className="text-lavender">→</span>
+        <span>{to}</span>
+      </div>
+    </div>
   );
 }
