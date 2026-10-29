@@ -62,7 +62,7 @@ export default function Home() {
           <Link
             key={c.slug}
             href={`/characters/${c.slug}`}
-            className="group -mx-2 w-1/5 sm:-mx-4"
+            className="group -mx-[4.5%] w-[26%] sm:-mx-4 sm:w-1/5"
             style={{ transform: `rotate(${(i - 2) * 5}deg) translateY(${Math.abs(i - 2) * 10}px)` }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

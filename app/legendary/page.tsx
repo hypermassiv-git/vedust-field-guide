@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CharacterCard } from "@/components/CharacterCard";
 import { LegendaryPathFinder } from "@/components/LegendaryPathFinder";
 import { Callout, PageHeader, Section } from "@/components/ui";
-import { CHARACTERS } from "@/content/characters";
+import { CHARACTERS, characterArt } from "@/content/characters";
 import { LEGENDARY } from "@/content/rules";
 
 export const metadata: Metadata = {
@@ -23,7 +24,41 @@ export default function LegendaryPage() {
       />
 
       <Section>
-        <div className="grid grid-cols-5 gap-2 sm:gap-3">
+        {/*
+          Phones: two rows of large cards gliding in opposite directions, faded at the edges.
+          Each row is drawn twice so the loop is seamless; the copy is inert and hidden from screen readers.
+          Larger screens: two rows of five.
+        */}
+        <div className="marquee -mx-4 space-y-3 sm:hidden">
+          {[legendaries.slice(0, 5), legendaries.slice(5)].map((row, r) => (
+            <div key={r} className="overflow-hidden py-1">
+              <div className={`marquee-track flex w-max ${r === 1 ? "marquee-reverse" : ""}`}>
+                {[...row, ...row].map((c, i) => {
+                  const copy = i >= row.length;
+                  return (
+                    <Link
+                      key={i}
+                      href={`/characters/${c.slug}`}
+                      className={`w-40 shrink-0 pr-3 ${copy ? "marquee-copy" : ""}`}
+                      aria-hidden={copy || undefined}
+                      tabIndex={copy ? -1 : undefined}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={characterArt(c)}
+                        alt={copy ? "" : c.name}
+                        width={160}
+                        height={160}
+                        className="aspect-square w-full rounded-2xl shadow-lg shadow-black/40 ring-1 ring-legendary/30"
+                      />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="hidden grid-cols-5 gap-3 sm:grid">
           {legendaries.map((c) => (
             <CharacterCard key={c.slug} c={c} compact />
           ))}

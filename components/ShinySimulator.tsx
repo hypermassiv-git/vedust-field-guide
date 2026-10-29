@@ -21,7 +21,7 @@ const num = (x: number) => Math.round(x).toLocaleString("en-US");
 
 const W = 560;
 const H = 220;
-const PAD = { l: 40, r: 12, t: 12, b: 28 };
+const PAD = { l: 44, r: 12, t: 12, b: 28 };
 
 export function ShinySimulator() {
   const [legendary, setLegendary] = useState(false);
@@ -85,35 +85,46 @@ export function ShinySimulator() {
           </span>
         </label>
 
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`Chance of shiny rises to ${pct(chance)} after ${n} attempts`}>
+        {/* Axis labels are HTML so they stay readable when the chart shrinks on phones. */}
+        <div className="relative">
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`Chance of shiny rises to ${pct(chance)} after ${n} attempts`}>
+            {[0, 0.25, 0.5, 0.75, 1].map((c) => (
+              <line key={c} x1={PAD.l} x2={W - PAD.r} y1={y(c)} y2={y(c)} stroke="rgba(255,255,255,0.08)" />
+            ))}
+            <path d={path} fill="none" stroke="var(--color-violet-strong)" strokeWidth={2.5} strokeLinejoin="round" />
+            <line x1={x(n)} x2={x(n)} y1={PAD.t} y2={H - PAD.b} stroke="var(--color-lavender)" strokeDasharray="3 4" />
+            <circle cx={x(n)} cy={y(chance)} r={5} fill="var(--color-lavender)" />
+          </svg>
           {[0, 0.25, 0.5, 0.75, 1].map((c) => (
-            <g key={c}>
-              <line x1={PAD.l} x2={W - PAD.r} y1={y(c)} y2={y(c)} stroke="rgba(255,255,255,0.08)" />
-              <text x={PAD.l - 8} y={y(c) + 4} textAnchor="end" fontSize="11" fill="var(--color-ink-muted)">
-                {c * 100}%
-              </text>
-            </g>
+            <span
+              key={c}
+              className="absolute left-0 -translate-y-1/2 text-right text-xs tabular-nums text-ink-muted"
+              style={{ top: `${(y(c) / H) * 100}%`, width: `${((PAD.l - 8) / W) * 100}%` }}
+            >
+              {c * 100}%
+            </span>
           ))}
-          <text x={PAD.l} y={H - 6} fontSize="11" fill="var(--color-ink-muted)">1</text>
-          <text x={W - PAD.r} y={H - 6} fontSize="11" fill="var(--color-ink-muted)" textAnchor="end">
+          <span className="absolute bottom-0 text-xs text-ink-muted" style={{ left: `${(PAD.l / W) * 100}%` }}>
+            1
+          </span>
+          <span className="absolute bottom-0 right-0 text-xs text-ink-muted">
             {maxAttempts} {maxAttempts === 1 ? "try" : "tries"}
-          </text>
-          <path d={path} fill="none" stroke="var(--color-violet-strong)" strokeWidth={2.5} strokeLinejoin="round" />
-          <line x1={x(n)} x2={x(n)} y1={PAD.t} y2={H - PAD.b} stroke="var(--color-lavender)" strokeDasharray="3 4" />
-          <circle cx={x(n)} cy={y(chance)} r={5} fill="var(--color-lavender)" />
-        </svg>
+          </span>
+        </div>
         <p className="text-xs leading-relaxed text-ink-muted">
           Chances are rounded to one decimal. Odds of still not being shiny by the end of the chart are under 1 in 2,000,
           and try {SHINY.guaranteedAttempt} on any veDUST always works.
         </p>
       </div>
 
-      <div className="space-y-3">
-        <Stat label={`Chance of shiny within ${n} tries`} value={pct(chance)} big />
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-1">
+        <div className="col-span-3 lg:col-span-1">
+          <Stat label={`Chance of shiny within ${n} tries`} value={pct(chance)} big />
+        </div>
         <Stat label="Average tries needed" value={avg.toFixed(1)} />
         <Stat label="Tries for a 90% chance" value={String(attemptsForChance(0.9, progress))} />
         <Stat label="100% chance by try" value={String(maxAttempts)} />
-        <div className="inset p-4">
+        <div className="inset col-span-3 p-4 lg:col-span-1">
           <p className="label">Most you&apos;d spend</p>
           <p className="mt-1 text-2xl font-bold tabular-nums">{num(cost)} DUST</p>
           <label className="mt-2 flex items-start gap-2 text-sm text-ink-secondary">
@@ -130,9 +141,9 @@ export function ShinySimulator() {
 
 function Stat({ label, value, big }: { label: string; value: string; big?: boolean }) {
   return (
-    <div className="inset p-4">
-      <p className="label">{label}</p>
-      <p className={`mt-1 font-bold tabular-nums ${big ? "text-3xl text-lavender" : "text-xl"}`}>{value}</p>
+    <div className={`inset ${big ? "p-4" : "p-3 sm:p-4"}`}>
+      <p className={big ? "label" : "label !text-[0.6rem] !tracking-[0.12em] sm:!text-[0.68rem] sm:!tracking-[0.18em]"}>{label}</p>
+      <p className={`mt-1 font-bold tabular-nums ${big ? "text-3xl text-lavender" : "text-lg sm:text-xl"}`}>{value}</p>
     </div>
   );
 }

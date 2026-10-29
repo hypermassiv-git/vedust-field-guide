@@ -31,7 +31,7 @@ export function FrameSimulator() {
       <div className="space-y-6">
         <label className="block">
           <span className="label">DUST locked</span>
-          <div className="mt-2 flex items-center gap-3">
+          <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <input
               type="number"
               min={LOCK.newLockMinDust}
@@ -105,13 +105,15 @@ export function FrameSimulator() {
           ) : (
             <ol className="mt-2 space-y-1.5 text-sm">
               {timeline.map((c) => (
-                <li key={c.day} className="flex flex-wrap items-baseline gap-x-2">
-                  <span className="w-28 shrink-0 text-ink-muted tabular-nums">{c.day === 0 ? "Today" : dateIn(c.day)}</span>
-                  <span className="font-semibold">
-                    {LEVELS.find((l) => l.id === c.level)!.label}{" "}
-                    <span style={{ color: TIER_COLOR[c.tier] }}>{TIERS.find((t) => t.id === c.tier)!.label}</span>
+                <li key={c.day} className="grid grid-cols-[6.5rem_1fr] items-baseline gap-x-2 sm:grid-cols-[7rem_1fr]">
+                  <span className="text-ink-muted tabular-nums">{c.day === 0 ? "Today" : dateIn(c.day)}</span>
+                  <span>
+                    <span className="font-semibold">
+                      {LEVELS.find((l) => l.id === c.level)!.label}{" "}
+                      <span style={{ color: TIER_COLOR[c.tier] }}>{TIERS.find((t) => t.id === c.tier)!.label}</span>
+                    </span>{" "}
+                    <span className="whitespace-nowrap text-ink-muted tabular-nums">({fmt(c.power)} veDUST)</span>
                   </span>
-                  <span className="text-ink-muted tabular-nums">({fmt(c.power)} veDUST)</span>
                 </li>
               ))}
             </ol>
@@ -121,7 +123,7 @@ export function FrameSimulator() {
 
       <div className="flex flex-col items-center gap-3 text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={frameArt(now.tier, now.level)} alt={`${levelLabel} ${tierLabel} frame`} width={300} height={300} className="w-full max-w-[300px] rounded-2xl" />
+        <img src={frameArt(now.tier, now.level)} alt={`${levelLabel} ${tierLabel} frame`} width={300} height={300} className="w-full max-w-[240px] rounded-2xl sm:max-w-[300px]" />
         <p className="text-xl font-bold">
           {levelLabel} <span style={{ color: TIER_COLOR[now.tier] }}>{tierLabel}</span>
         </p>

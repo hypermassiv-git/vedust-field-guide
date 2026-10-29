@@ -33,10 +33,10 @@ const RULES: { rule: string; detail: string; tone: "ok" | "warn" }[] = [
 ];
 
 const PENALTIES = [
-  { left: "1 year", cost: "75%" },
-  { left: "6 months", cost: "50%" },
-  { left: "3 months", cost: "37.5%" },
-  { left: "1 month", cost: "about 29%" },
+  { left: "1 year left", cost: "75%" },
+  { left: "6 months left", cost: "50%" },
+  { left: "3 months left", cost: "37.5%" },
+  { left: "1 month left", cost: "~29%" },
   { left: "Lock ended", cost: "0%" },
 ];
 
@@ -147,11 +147,20 @@ export default function BasicsPage() {
           <p className="mt-1 text-sm text-ink-secondary">
             The burned part depends only on how long is left. Infinite Locks count as a full year.
           </p>
-          <div className="mt-4 grid grid-cols-5 gap-2 text-center">
+          {/* Phones: a simple list. Larger screens: five tiles in a row. */}
+          <ul className="inset mt-4 divide-y divide-white/[0.06] sm:hidden">
+            {PENALTIES.map((p) => (
+              <li key={p.left} className="flex items-center justify-between px-4 py-2.5 text-sm">
+                <span className="text-ink-secondary">{p.left}</span>
+                <span className={`font-bold tabular-nums ${p.cost === "0%" ? "text-low" : "text-high"}`}>{p.cost}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 hidden grid-cols-5 gap-2 text-center sm:grid">
             {PENALTIES.map((p) => (
               <div key={p.left} className="inset px-1 py-3">
                 <p className={`font-bold tabular-nums ${p.cost === "0%" ? "text-low" : "text-high"}`}>{p.cost}</p>
-                <p className="mt-0.5 text-[11px] leading-tight text-ink-muted sm:text-xs">{p.left} left</p>
+                <p className="mt-0.5 text-xs leading-tight text-ink-muted">{p.left}</p>
               </div>
             ))}
           </div>

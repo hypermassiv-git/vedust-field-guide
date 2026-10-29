@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ShinySimulator } from "@/components/ShinySimulator";
-import { ARCHETYPE_COLOR, Callout, PageHeader, Section } from "@/components/ui";
+import { ARCHETYPE_COLOR, ArchetypeBadge, Callout, PageHeader, Section } from "@/components/ui";
 import { ARCHETYPES, ARCHETYPE_ORDER } from "@/content/characters";
 import { MAGIC_ITEMS, MAGIC_KIND_LABEL, itemArt } from "@/content/magic";
 import { SHINY } from "@/content/rules";
@@ -40,7 +40,26 @@ export default function MagicPage() {
       </Section>
 
       <Section label="Which item works on what" title="Compatibility">
-        <div className="panel overflow-x-auto p-2 sm:p-4">
+        {/* Phones: one row per item listing what it works on. Larger screens: the full table. */}
+        <ul className="panel divide-y divide-white/[0.06] px-4 py-1 sm:hidden">
+          {MAGIC_ITEMS.map((m) => (
+            <li key={m.slug} className="flex items-start gap-3 py-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={itemArt(m.slug)} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
+              <div>
+                <p className="text-sm font-semibold">{m.name}</p>
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {m.kind === "cooldown" ? (
+                    <span className="text-xs text-ink-secondary">Any shiny attempt</span>
+                  ) : (
+                    m.compatibleWith.map((a) => <ArchetypeBadge key={a} archetype={a} />)
+                  )}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="panel hidden overflow-x-auto p-2 sm:block sm:p-4">
           <table className="w-full min-w-[620px] text-sm">
             <thead>
               <tr>
@@ -85,7 +104,7 @@ export default function MagicPage() {
       </Section>
 
       <Section label="Going shiny" title="Your real odds">
-        <div className="mb-5 grid gap-3 sm:grid-cols-3">
+        <div className="mb-5 grid grid-cols-3 gap-2 sm:gap-3">
           <Fact big="1%" small="chance on your first try" />
           <Fact big="+0.5%" small="added after every failed try" />
           <Fact big={`Try ${SHINY.guaranteedAttempt}`} small="is guaranteed to work" />
@@ -137,9 +156,9 @@ export default function MagicPage() {
 
 function Fact({ big, small }: { big: string; small: string }) {
   return (
-    <div className="panel p-5 text-center">
-      <p className="text-3xl font-bold text-lavender">{big}</p>
-      <p className="mt-1 text-sm text-ink-secondary">{small}</p>
+    <div className="panel !rounded-[20px] px-2 py-4 text-center sm:!rounded-[var(--radius-card)] sm:p-5">
+      <p className="text-xl font-bold text-lavender sm:text-3xl">{big}</p>
+      <p className="mt-1 text-xs leading-snug text-ink-secondary sm:text-sm">{small}</p>
     </div>
   );
 }

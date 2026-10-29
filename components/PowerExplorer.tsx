@@ -41,7 +41,7 @@ export function PowerExplorer() {
 
   return (
     <div className="panel p-5 sm:p-8">
-      <label className="flex flex-wrap items-center gap-3">
+      <label className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <span className="text-lg font-semibold">If I lock</span>
         <input
           type="number"
@@ -51,7 +51,8 @@ export function PowerExplorer() {
           className="inset h-11 w-32 px-4 text-lg font-semibold tabular-nums outline-none"
           aria-label="DUST to lock"
         />
-        <span className="text-lg font-semibold">DUST, how much power do I get?</span>
+        <span className="text-lg font-semibold">DUST,</span>
+        <span className="w-full text-lg font-semibold sm:w-auto">how much power do I get?</span>
       </label>
 
       <div className="mt-6 space-y-2">
@@ -64,17 +65,18 @@ export function PowerExplorer() {
               type="button"
               onClick={() => setPick(i)}
               aria-pressed={pick === i}
-              className="group grid w-full grid-cols-[84px_1fr] items-center gap-3 rounded-xl p-1.5 text-left transition-colors hover:bg-white/[0.03] aria-pressed:bg-white/[0.06] sm:grid-cols-[100px_1fr_120px]"
+              className="group grid w-full grid-cols-[64px_1fr_52px] items-center gap-2 rounded-xl p-1.5 text-left transition-colors hover:bg-white/[0.03] aria-pressed:bg-white/[0.06] sm:grid-cols-[100px_1fr_120px] sm:gap-3"
             >
-              <span className="text-sm font-semibold text-ink-secondary group-aria-pressed:text-ink">{l.label}</span>
-              <span className="h-7 overflow-hidden rounded-lg bg-white/[0.05]">
+              <span className="text-xs font-semibold text-ink-secondary group-aria-pressed:text-ink sm:text-sm">{l.label}</span>
+              <span className="h-6 overflow-hidden rounded-lg bg-white/[0.05] sm:h-7">
                 <span
                   className="block h-full rounded-lg bg-gradient-to-r from-brand-to to-violet-strong transition-[width] duration-300"
                   style={{ width: `${Math.max(width, 1.5)}%` }}
                 />
               </span>
-              <span className="col-start-2 text-sm tabular-nums text-ink-secondary sm:col-start-3 sm:text-right">
-                <span className="font-semibold text-ink">{fmt(p)}</span> veDUST
+              <span className="text-right text-sm tabular-nums text-ink-secondary">
+                <span className="font-semibold text-ink">{fmt(p)}</span>
+                <span className="hidden sm:inline"> veDUST</span>
               </span>
             </button>
           );

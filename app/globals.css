@@ -289,3 +289,25 @@ input[type="range"] {
     animation: twinkle 1.6s ease-in-out calc(var(--d, 0ms) + 300ms) infinite;
   }
 }
+
+/* ---------- Auto-scrolling rows (Legendary gallery on phones) ---------- */
+
+.marquee {
+  /* Fade the cards in and out at the screen edges. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track { animation: marquee 32s linear infinite; }
+  .marquee-reverse { animation-direction: reverse; animation-duration: 38s; }
+  .marquee:active .marquee-track { animation-play-state: paused; }
+}
+/* Without motion, fall back to plain swipeable rows with no duplicate cards. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee { -webkit-mask-image: none; mask-image: none; }
+  .marquee > div { overflow-x: auto; padding-inline: 1rem; }
+  .marquee-copy { display: none; }
+}

@@ -7,16 +7,19 @@ export const TIER_COLOR = {
   diamond: "var(--color-diamond)",
 } as const;
 
-/** 4x4 grid: Levels across (from veDUST power), Tiers down (from days left). */
+/**
+ * 4x4 grid: Levels across (from veDUST power), Tiers down (from days left).
+ * On phones each Tier's label sits on its own row above its four frames, so the grid fits without scrolling.
+ */
 export function FrameGrid() {
   return (
-    <div className="panel overflow-x-auto p-4 sm:p-6">
-      <div className="grid min-w-[560px] grid-cols-[110px_repeat(4,minmax(0,1fr))] gap-3">
-        <div />
+    <div className="panel p-4 sm:p-6">
+      <div className="grid grid-cols-4 gap-2 sm:grid-cols-[110px_repeat(4,minmax(0,1fr))] sm:gap-3">
+        <div className="hidden sm:block" />
         {LEVELS.map((l) => (
           <div key={l.id} className="text-center">
-            <p className="font-semibold">{l.label}</p>
-            <p className="text-xs text-ink-muted tabular-nums">{l.range.replace(" veDUST power", "")}</p>
+            <p className="text-sm font-semibold sm:text-base">{l.label}</p>
+            <p className="text-[11px] text-ink-muted tabular-nums sm:text-xs">{l.range.replace(" veDUST power", "")}</p>
           </div>
         ))}
         {TIERS.map((t) => (
@@ -34,7 +37,7 @@ export function FrameGrid() {
 function FrameRow({ tier }: { tier: (typeof TIERS)[number] }) {
   return (
     <>
-      <div className="flex flex-col justify-center">
+      <div className="col-span-4 mt-2 flex items-baseline gap-2 sm:col-span-1 sm:mt-0 sm:flex-col sm:justify-center sm:gap-0">
         <p className="font-semibold" style={{ color: TIER_COLOR[tier.id] }}>
           {tier.label}
         </p>
@@ -49,7 +52,7 @@ function FrameRow({ tier }: { tier: (typeof TIERS)[number] }) {
             loading="lazy"
             width={160}
             height={160}
-            className="aspect-square w-full rounded-xl transition-transform duration-200 group-hover:scale-[1.04]"
+            className="aspect-square w-full rounded-lg transition-transform sm:rounded-xl duration-200 group-hover:scale-[1.04]"
           />
           <figcaption className="sr-only">
             {l.label} {tier.label}: {l.range}, {tier.range}
