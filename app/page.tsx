@@ -8,7 +8,7 @@ const SHOWCASE = ["tootles", "coralie", "star-eye-selwyn", "luna", "nadette"];
 
 const JOURNEY = [
   { step: "Lock DUST", body: "Lock any amount from 10 DUST for 28 to 365 days, or as an Infinite Lock." },
-  { step: "Get a veDUST", body: "An NFT with one of 50 characters, framed by its power and lock time." },
+  { step: "Get a veDUST NFT", body: "Comes with one of 50 characters, framed by its power and lock time." },
   {
     step: "Use Magic",
     body: (
