@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CharacterCard } from "@/components/CharacterCard";
 import { ShinyToggle } from "@/components/ShinyToggle";
-import { ArchetypeBadge, Section } from "@/components/ui";
+import { ArchetypeBadge, Section, ShopLink } from "@/components/ui";
 import { ARCHETYPES, CHARACTERS, characterArt, getCharacter, shinyVideo } from "@/content/characters";
 import { MAGIC_ITEMS, itemArt } from "@/content/magic";
 import { LEGENDARY } from "@/content/rules";
@@ -85,6 +85,9 @@ export default async function CharacterPage({ params }: Props) {
                   </span>
                 </li>
               </ul>
+              <p className="mt-5 text-sm text-ink-muted">
+                Buy these with DUST in <ShopLink />.
+              </p>
             </div>
           </div>
         </div>

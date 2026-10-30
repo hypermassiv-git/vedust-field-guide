@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Archetype } from "@/content/characters";
 import { ARCHETYPES } from "@/content/characters";
 
@@ -21,13 +22,24 @@ export function PageHeader({ eyebrow, title, intro }: { eyebrow: string; title: 
   );
 }
 
-export function Section({ label, title, children, className = "" }: { label?: string; title?: string; children: React.ReactNode; className?: string }) {
+export function Section({ id, label, title, children, className = "" }: { id?: string; label?: string; title?: string; children: React.ReactNode; className?: string }) {
   return (
-    <section className={`mt-14 ${className}`}>
+    <section id={id} className={`mt-14 scroll-mt-6 ${className}`}>
       {label && <p className="label">{label}</p>}
       {title && <h2 className="mt-2 text-2xl font-bold sm:text-[28px]">{title}</h2>}
       <div className={label || title ? "mt-5" : ""}>{children}</div>
     </section>
+  );
+}
+
+/** Where Character Magic is bought: links to the shop guide on the Magic page. */
+export const SHOP_HREF = "/magic#nadettes-shop";
+
+export function ShopLink({ children = "Nadette's Shop" }: { children?: React.ReactNode }) {
+  return (
+    <Link href={SHOP_HREF} className="font-semibold text-ink underline decoration-white/30 underline-offset-4 hover:decoration-white/70">
+      {children}
+    </Link>
   );
 }
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CHARACTERS, characterArt, framedArt } from "@/content/characters";
 import { frameArt } from "@/lib/frames";
+import { ShopLink } from "@/components/ui";
 import { itemArt } from "@/content/magic";
 
 const SHOWCASE = ["tootles", "coralie", "star-eye-selwyn", "luna", "nadette"];
@@ -8,7 +9,14 @@ const SHOWCASE = ["tootles", "coralie", "star-eye-selwyn", "luna", "nadette"];
 const JOURNEY = [
   { step: "Lock DUST", body: "Lock any amount from 10 DUST for 28 to 365 days, or as an Infinite Lock." },
   { step: "Get a veDUST", body: "An NFT with one of 50 characters, framed by its power and lock time." },
-  { step: "Use Magic", body: "Spend DUST on items that make it shiny, swap it, or turn it Legendary." },
+  {
+    step: "Use Magic",
+    body: (
+      <>
+        Buy items in <ShopLink /> with DUST to make it shiny, swap it, or turn it Legendary.
+      </>
+    ),
+  },
   { step: "Collect", body: "Earn badges and titles for owning Legendaries, shinies and full sets." },
 ];
 

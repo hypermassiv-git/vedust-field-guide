@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ShopLink } from "@/components/ui";
 import { LEGENDARY, LOCK } from "@/content/rules";
 
 type Answer = "none" | "core" | "legendary" | "olympic";
@@ -78,8 +79,8 @@ export function LegendaryPathFinder() {
           >
             Turns the veDUST you already have into a Legendary for good. It needs at least{" "}
             {fmt(LEGENDARY.manuscriptMinLockDust)} DUST locked
-            {manuscriptTopUp > 0 ? `, so top it up first (top-ups need ${LOCK.minDays}+ days left on the lock)` : ", which you have"}. Supply
-            is limited.
+            {manuscriptTopUp > 0 ? `, so top it up first (top-ups need ${LOCK.minDays}+ days left on the lock)` : ", which you have"}. Buy
+            the Manuscript in <ShopLink />. Supply is limited.
           </Option>
         )}
         {has === "core" && (
@@ -98,7 +99,7 @@ function Option({ title, cost, children }: { title: string; cost?: string; child
     <div className="inset p-4">
       <p className="font-semibold">{title}</p>
       {cost && <p className="mt-1 text-sm font-semibold text-legendary">{cost}</p>}
-      <p className="mt-1.5 text-sm leading-relaxed text-ink-secondary">{children}</p>
+      <div className="mt-1.5 text-sm leading-relaxed text-ink-secondary">{children}</div>
     </div>
   );
 }

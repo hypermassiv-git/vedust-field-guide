@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { ShinySimulator } from "@/components/ShinySimulator";
 import { ARCHETYPE_COLOR, ArchetypeBadge, Callout, PageHeader, Section } from "@/components/ui";
-import { ARCHETYPES, ARCHETYPE_ORDER } from "@/content/characters";
+import Link from "next/link";
+import { ARCHETYPES, ARCHETYPE_ORDER, characterArt, getCharacter } from "@/content/characters";
 import { MAGIC_ITEMS, MAGIC_KIND_LABEL, itemArt } from "@/content/magic";
+import { DOCS } from "@/content/rules";
 import { expectedAttempts } from "@/lib/shiny";
 
 export const metadata: Metadata = {
@@ -16,8 +18,12 @@ export default function MagicPage() {
       <PageHeader
         eyebrow="Character Magic"
         title="Change your character"
-        intro="Character Magic items are bought with DUST in the shop and used on a veDUST. They do three things: try to make it shiny, swap it for another character, or turn it Legendary."
+        intro="Character Magic items are bought with DUST in Nadette's Shop and used on a veDUST. They do three things: try to make it shiny, swap it for another character, or turn it Legendary."
       />
+
+      <Section id="nadettes-shop" label="Where to buy" title="Nadette's Shop">
+        <ShopGuide />
+      </Section>
 
       <Section label="All 9 items">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -151,6 +157,61 @@ export default function MagicPage() {
         </div>
       </Section>
     </main>
+  );
+}
+
+const SHOP_STEPS = [
+  { title: "Open your profile", body: "In the Neverland app, go to your own profile and tap the shop door." },
+  { title: "Pick Character Magic", body: "The shop has three sections. Character Magic is where these 9 items live." },
+  { title: "Pay with DUST", body: "Add items to your basket and check out with DUST." },
+  { title: "Use it from your Inventory", body: "Items wait in your Inventory, stacked by quantity. Use one on a veDUST it works on." },
+];
+
+function ShopGuide() {
+  const nadette = getCharacter("nadette");
+  return (
+    <div className="panel grid gap-6 p-5 sm:p-6 md:grid-cols-[200px_1fr] md:items-center">
+      {nadette && (
+        <Link href={`/characters/${nadette.slug}`} className="mx-auto block w-36 md:w-full">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={characterArt(nadette)} alt="Nadette" width={200} height={200} className="aspect-square w-full rounded-2xl ring-1 ring-legendary/30" />
+          <p className="mt-2 text-center text-xs text-ink-muted">Nadette runs the shop</p>
+        </Link>
+      )}
+      <div>
+        <ol className="grid gap-3 sm:grid-cols-2">
+          {SHOP_STEPS.map((s, i) => (
+            <li key={s.title} className="inset flex gap-3 p-4">
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-lavender/[0.12] text-sm font-bold text-lavender">
+                {i + 1}
+              </span>
+              <div>
+                <p className="font-semibold">{s.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-secondary">{s.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <ul className="mt-4 space-y-2 text-sm leading-relaxed text-ink-secondary">
+          <li>
+            <strong className="text-ink">Some items run out.</strong> Limited items, like the Ancient Manuscript, show how
+            many are left. Restocks happen at no set time.
+          </li>
+          <li>
+            <strong className="text-ink">Friends can gift you items.</strong> Add items to your wish list, and if your profile is public, visitors to
+            your profile can send them to you.
+          </li>
+        </ul>
+        <a
+          href={DOCS.profilesAndShop}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 inline-block text-sm font-semibold text-lavender underline decoration-lavender/30 underline-offset-4"
+        >
+          More about the shop ↗
+        </a>
+      </div>
+    </div>
   );
 }
 
