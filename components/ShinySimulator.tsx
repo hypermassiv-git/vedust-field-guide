@@ -112,8 +112,8 @@ export function ShinySimulator() {
           </span>
         </div>
         <p className="text-xs leading-relaxed text-ink-muted">
-          Chances are rounded to one decimal. Odds of still not being shiny by the end of the chart are under 1 in 2,000,
-          and try {SHINY.guaranteedAttempt} on any veDUST always works.
+          Chances are rounded to one decimal. By the end of the chart, fewer than 1 in 2,000 veDUSTs are still not
+          shiny.
         </p>
       </div>
 
@@ -123,7 +123,7 @@ export function ShinySimulator() {
         </div>
         <Stat label="Average tries needed" value={avg.toFixed(1)} />
         <Stat label="Tries for a 90% chance" value={String(attemptsForChance(0.9, progress))} />
-        <Stat label="100% chance by try" value={String(maxAttempts)} />
+        <Stat label="99.9%+ chance by try" value={String(maxAttempts)} />
         <div className="inset col-span-3 p-4 lg:col-span-1">
           <p className="label">Most you&apos;d spend</p>
           <p className="mt-1 text-2xl font-bold tabular-nums">{num(cost)} DUST</p>

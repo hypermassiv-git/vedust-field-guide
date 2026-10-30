@@ -23,13 +23,13 @@ const VOTE_TOPICS = [
   { title: "Governance", body: "How proposals and voting work." },
 ];
 
-const RULES: { rule: string; detail: string; tone: "ok" | "warn" }[] = [
-  { rule: `Lock at least ${LOCK.newLockMinDust} DUST`, detail: `You can add more DUST to it later, as long as the lock has at least ${LOCK.minDays} days left.`, tone: "ok" },
-  { rule: `Choose ${LOCK.minDays} days to 1 year, or an Infinite Lock`, detail: "Longer locks give more power. An Infinite Lock gives full power that never decays.", tone: "ok" },
-  { rule: "Locks end on a Thursday", detail: `Unlock dates round down to ${LOCK.epochDay}, so a lock can end up to 6 days sooner than picked.`, tone: "ok" },
-  { rule: "Your DUST stays locked until the end", detail: "Leaving early burns 25% to 75% of it. See the table below.", tone: "warn" },
-  { rule: "You can merge, but not split", detail: "Two active locks combine into one with the later end date. An Infinite Lock can absorb a timed one, not the reverse.", tone: "ok" },
-  { rule: "You can sell or send it", detail: "veDUST is an NFT, so it can be sold on marketplaces like OpenSea or sent to another wallet. Rewards earned before the transfer stay with the seller.", tone: "ok" },
+const RULES: { rule: string; detail: string }[] = [
+  { rule: `Lock at least ${LOCK.newLockMinDust} DUST`, detail: `You can add more DUST to it later, as long as the lock has at least ${LOCK.minDays} days left.` },
+  { rule: `Choose ${LOCK.minDays} days to 1 year, or an Infinite Lock`, detail: "Longer locks give more power. An Infinite Lock gives full power that never decays." },
+  { rule: "Locks end on a Thursday", detail: `Unlock dates round down to ${LOCK.epochDay}, so a lock can end up to 6 days sooner than picked.` },
+  { rule: "Your DUST stays locked until the end", detail: "Leaving early burns 25% to 75% of it. See the table below." },
+  { rule: "You can merge, but not split", detail: "Two active locks combine into one with the later end date. An Infinite Lock can absorb a timed one, not the reverse." },
+  { rule: "You can sell or send it", detail: "veDUST is an NFT, so it can be sold on marketplaces like OpenSea or sent to another wallet. Rewards earned before the transfer stay with the seller." },
 ];
 
 const PENALTIES = [
@@ -128,11 +128,7 @@ export default function BasicsPage() {
         <ol className="grid gap-3 md:grid-cols-2">
           {RULES.map((r, i) => (
             <li key={r.rule} className="panel flex gap-4 p-5">
-              <span
-                className={`flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold tabular-nums ${
-                  r.tone === "warn" ? "bg-medium/15 text-medium" : "bg-lavender/[0.12] text-lavender"
-                }`}
-              >
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lavender/[0.12] text-sm font-bold tabular-nums text-lavender">
                 {i + 1}
               </span>
               <div>

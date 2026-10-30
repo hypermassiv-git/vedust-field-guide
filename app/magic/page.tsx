@@ -3,7 +3,7 @@ import { ShinySimulator } from "@/components/ShinySimulator";
 import { ARCHETYPE_COLOR, ArchetypeBadge, Callout, PageHeader, Section } from "@/components/ui";
 import { ARCHETYPES, ARCHETYPE_ORDER } from "@/content/characters";
 import { MAGIC_ITEMS, MAGIC_KIND_LABEL, itemArt } from "@/content/magic";
-import { SHINY } from "@/content/rules";
+import { expectedAttempts } from "@/lib/shiny";
 
 export const metadata: Metadata = {
   title: "Character Magic",
@@ -107,7 +107,7 @@ export default function MagicPage() {
         <div className="mb-5 grid grid-cols-3 gap-2 sm:gap-3">
           <Fact big="1%" small="chance on your first try" />
           <Fact big="+0.5%" small="added after every failed try" />
-          <Fact big={`Try ${SHINY.guaranteedAttempt}`} small="is guaranteed to work" />
+          <Fact big={expectedAttempts().toFixed(1)} small="tries needed on average" />
         </div>
         <ShinySimulator />
         <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-ink-secondary md:grid-cols-3">
